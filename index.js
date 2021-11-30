@@ -21,6 +21,10 @@ app.use(rolesRouter);
 const usersRouter = require("./routers/routes/users");
 app.use(usersRouter);
 
+// Tasks Router
+const tasksRouter = require("./routers/routes/tasks");
+app.use(tasksRouter);
+
 // Get PORT variable from .env
 const PORT = process.env.PORT;
 
