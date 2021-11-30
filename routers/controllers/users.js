@@ -49,7 +49,7 @@ const login = (req, res) => {
             password,
             result.password
           );
-          
+
           if (matchedPassword) {
             const payload = {
               email: result.email,
@@ -79,7 +79,14 @@ const login = (req, res) => {
 };
 
 const getUsers = (req, res) => {
-  // code
+  usersModel
+    .find({})
+    .then((result) => {
+      res.status(201).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 };
 
 const deleteUser = (req, res) => {
