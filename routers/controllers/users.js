@@ -94,7 +94,7 @@ const deleteUser = (req, res) => {
 
   usersModel
     .findByIdAndUpdate(id, { deleted: true })
-    .then((result) => {
+    .then(() => {
       res.status(201).json({ message: "User has been deleted successfully" });
     })
     .catch((err) => {
