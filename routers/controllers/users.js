@@ -1,4 +1,5 @@
 const usersModel = require("./../../db/models/users");
+const tasksModel = require("./../../db/models/tasks");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -85,47 +86,45 @@ const login = (req, res) => {
 };
 
 const getUsers = (req, res) => {
-  if (!req.token.deleted) {
-    usersModel
-      .find({})
-      .then((result) => {
-        if (result.length > 0) {
-          res.status(200).json(result);
-        } else {
-          res.status(404).json({ message: "There is no users yet!!" });
-        }
-      })
-      .catch((err) => {
-        res.status(400).json(err);
-      });
-  } else {
-    res.status(404).json({ message: "Your user is deleted" });
-  }
+  usersModel
+    .find({})
+    .then((result) => {
+      if (result.length > 0) {
+        res.status(200).json(result);
+      } else {
+        res.status(404).json({ message: "There is no users yet!!" });
+      }
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 };
 
 const deleteUser = (req, res) => {
-  if (!req.token.deleted) {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    usersModel
-      .findByIdAndUpdate(id, { deleted: true })
-      .then(() => {
-        if (result) {
-          res
-            .status(200)
-            .json({ message: "User has been deleted successfully" });
-        } else {
-          res
-            .status(404)
-            .json({ message: `There is no user with this ID: ${id}` });
-        }
-      })
-      .catch((err) => {
-        res.status(400).json(err);
-      });
-  } else {
-    res.status(404).json({ message: "Your user is deleted" });
-  }
+  usersModel
+    .findByIdAndUpdate(id, { deleted: true })
+    .then((result) => {
+      if (result) {
+        tasksModel
+          .updateMany({ creator: id, deleted: false }, { deleted: true })
+          .then(() => {
+            console.log(`All the todos for user:${id} has been deleted`);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        res.status(200).json({ message: "User has been deleted successfully" });
+      } else {
+        res
+          .status(404)
+          .json({ message: `There is no user with this ID: ${id}` });
+      }
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 };
 
 module.exports = { signup, login, getUsers, deleteUser };
