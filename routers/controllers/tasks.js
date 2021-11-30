@@ -116,7 +116,30 @@ const updateTodo = (req, res) => {
 };
 
 const deleteTodo = (req, res) => {
-  // code
+  if (!req.token.deleted) {
+    const { id } = req.params;
+
+    tasksModel
+      .findOneAndUpdate(
+        { _id: id, creator: req.token.id, deleted: false },
+        { deleted: true },
+        { new: true }
+      )
+      .then((result) => {
+        if (result) {
+          res.status(200).json(result);
+        } else {
+          res
+            .status(404)
+            .json({ message: `There is no todo with this ID: ${id}` });
+        }
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  } else {
+    res.status(404).json({ message: "This user is deleted" });
+  }
 };
 
 module.exports = {
