@@ -13,7 +13,21 @@ const getTodo = (req, res) => {
 };
 
 const addTodo = (req, res) => {
-  // code
+  const { name, creator } = req.body;
+
+  const newTodo = new tasksModel({
+    name,
+    creator,
+  });
+
+  newTodo
+    .save()
+    .then((result) => {
+      res.status(201).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 };
 
 const updateTodo = (req, res) => {

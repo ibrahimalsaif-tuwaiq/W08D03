@@ -16,7 +16,7 @@ const tasksRouter = express.Router();
 tasksRouter.get("/todos", authentication, getTodos);
 tasksRouter.get("/deletedTodos", authentication, getDeletedTodos);
 tasksRouter.get("/todos/:id", authentication, getTodo);
-tasksRouter.post("/addTodo", authentication, addTodo);
+tasksRouter.post("/todos", authentication, addTodo);
 tasksRouter.put("/todos/:id", authentication, updateTodo);
 tasksRouter.delete("/todos/:id", authentication, deleteTodo);
 
