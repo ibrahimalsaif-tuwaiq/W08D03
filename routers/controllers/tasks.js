@@ -39,7 +39,30 @@ const getDeletedTodos = (req, res) => {
 };
 
 const getTodo = (req, res) => {
-  // code
+  if (!req.token.deleted) {
+    const { id } = req.params;
+
+    tasksModel
+      .findOne({ _id: id, creator: req.token.id })
+      .then((result) => {
+        if (result) {
+          if (!result.deleted) {
+            res.status(200).json(result);
+          } else {
+            res.status(404).json({ message: "This todo is deleted" });
+          }
+        } else {
+          res
+            .status(404)
+            .json({ message: `There is no todo with this ID: ${id}` });
+        }
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  } else {
+    res.status(404).json({ message: "This user is deleted" });
+  }
 };
 
 const addTodo = (req, res) => {
