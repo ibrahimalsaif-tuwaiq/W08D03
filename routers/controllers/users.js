@@ -9,6 +9,9 @@ dotenv.config();
 // Get SALT variable from .env
 const SALT = Number(process.env.SALT);
 
+// Get SECRET_KEY variable from .env
+const SECRET = process.env.SECRET_KEY;
+
 const signup = async (req, res) => {
   const { email, password, role } = req.body;
 
@@ -32,7 +35,47 @@ const signup = async (req, res) => {
 };
 
 const login = (req, res) => {
-  // code
+  const { email, password } = req.body;
+
+  const lowerCaseEmail = email.toLowerCase();
+
+  usersModel
+    .findOne({ email: lowerCaseEmail })
+    .populate("role")
+    .then(async (result) => {
+      if (result) {
+        if (result.email == lowerCaseEmail) {
+          const matchedPassword = await bcrypt.compare(
+            password,
+            result.password
+          );
+          
+          if (matchedPassword) {
+            const payload = {
+              email: result.email,
+              role: result.role.role,
+            };
+
+            const options = {
+              expiresIn: "60m",
+            };
+
+            const token = jwt.sign(payload, SECRET, options);
+
+            res.status(200).json({ result, token });
+          } else {
+            res.status(400).json("Invalid Email or Password!!");
+          }
+        } else {
+          res.status(400).json("Invalid Email or Password!!");
+        }
+      } else {
+        res.status(404).json("Email does not exist!!");
+      }
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 };
 
 const getUsers = (req, res) => {
