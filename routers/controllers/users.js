@@ -90,7 +90,16 @@ const getUsers = (req, res) => {
 };
 
 const deleteUser = (req, res) => {
-  // code
+  const { id } = req.params;
+
+  usersModel
+    .findByIdAndUpdate(id, { deleted: true })
+    .then((result) => {
+      res.status(201).json({ message: "User has been deleted successfully" });
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 };
 
 module.exports = { signup, login, getUsers, deleteUser };
