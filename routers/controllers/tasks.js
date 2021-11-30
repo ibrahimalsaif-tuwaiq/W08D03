@@ -15,7 +15,7 @@ const getTodos = (req, res) => {
         res.status(400).json(err);
       });
   } else {
-    res.status(404).json({ message: "This user is deleted" });
+    res.status(404).json({ message: "Your user is deleted" });
   }
 };
 
@@ -34,7 +34,7 @@ const getDeletedTodos = (req, res) => {
         res.status(400).json(err);
       });
   } else {
-    res.status(404).json({ message: "This user is deleted" });
+    res.status(404).json({ message: "Your user is deleted" });
   }
 };
 
@@ -43,14 +43,10 @@ const getTodo = (req, res) => {
     const { id } = req.params;
 
     tasksModel
-      .findOne({ _id: id, creator: req.token.id })
+      .findOne({ _id: id, creator: req.token.id, deleted: false })
       .then((result) => {
         if (result) {
-          if (!result.deleted) {
-            res.status(200).json(result);
-          } else {
-            res.status(404).json({ message: "This todo is deleted" });
-          }
+          res.status(200).json(result);
         } else {
           res
             .status(404)
@@ -61,7 +57,7 @@ const getTodo = (req, res) => {
         res.status(400).json(err);
       });
   } else {
-    res.status(404).json({ message: "This user is deleted" });
+    res.status(404).json({ message: "Your user is deleted" });
   }
 };
 
@@ -83,7 +79,7 @@ const addTodo = (req, res) => {
         res.status(400).json(err);
       });
   } else {
-    res.status(404).json({ message: "This user is deleted" });
+    res.status(404).json({ message: "Your user is deleted" });
   }
 };
 
@@ -111,7 +107,7 @@ const updateTodo = (req, res) => {
         res.status(400).json(err);
       });
   } else {
-    res.status(404).json({ message: "This user is deleted" });
+    res.status(404).json({ message: "Your user is deleted" });
   }
 };
 
@@ -138,7 +134,7 @@ const deleteTodo = (req, res) => {
         res.status(400).json(err);
       });
   } else {
-    res.status(404).json({ message: "This user is deleted" });
+    res.status(404).json({ message: "Your user is deleted" });
   }
 };
 
