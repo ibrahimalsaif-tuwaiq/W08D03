@@ -52,8 +52,10 @@ const login = (req, res) => {
 
           if (matchedPassword) {
             const payload = {
+              id: result._id,
               email: result.email,
               role: result.role.role,
+              deleted: result.deleted,
             };
 
             const options = {
@@ -82,7 +84,7 @@ const getUsers = (req, res) => {
   usersModel
     .find({})
     .then((result) => {
-      res.status(201).json(result);
+      res.status(200).json(result);
     })
     .catch((err) => {
       res.status(400).json(err);
@@ -95,7 +97,7 @@ const deleteUser = (req, res) => {
   usersModel
     .findByIdAndUpdate(id, { deleted: true })
     .then(() => {
-      res.status(201).json({ message: "User has been deleted successfully" });
+      res.status(200).json({ message: "User has been deleted successfully" });
     })
     .catch((err) => {
       res.status(400).json(err);
