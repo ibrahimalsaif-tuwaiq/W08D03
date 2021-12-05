@@ -15,6 +15,23 @@ const getTodos = (req, res) => {
     });
 };
 
+const getUserTodos = (req, res) => {
+  const { id } = req.params;
+
+  tasksModel
+    .find({ creator: id, deleted: false })
+    .then((result) => {
+      if (result.length > 0) {
+        res.status(200).json(result);
+      } else {
+        res.status(404).json({ message: "There is no todos yet!!" });
+      }
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+
 const getDeletedTodos = (req, res) => {
   tasksModel
     .find({ creator: req.token.id, deleted: true })
@@ -114,11 +131,37 @@ const deleteTodo = (req, res) => {
     });
 };
 
+const deleteUserTodo = (req, res) => {
+  const { id } = req.params;
+  const { userId } = req.body;
+
+  tasksModel
+    .findOneAndUpdate(
+      { _id: id, creator: userId, deleted: false },
+      { deleted: true },
+      { new: true }
+    )
+    .then((result) => {
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        res
+          .status(404)
+          .json({ message: `There is no todo with this ID: ${id}` });
+      }
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+
 module.exports = {
   getTodos,
+  getUserTodos,
   getDeletedTodos,
   getTodo,
   addTodo,
   updateTodo,
   deleteTodo,
+  deleteUserTodo,
 };

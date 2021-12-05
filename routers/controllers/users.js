@@ -87,7 +87,7 @@ const login = (req, res) => {
 
 const getUsers = (req, res) => {
   usersModel
-    .find({})
+    .find({ deleted: false })
     .then((result) => {
       if (result.length > 0) {
         res.status(200).json(result);
