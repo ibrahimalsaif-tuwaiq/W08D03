@@ -2,6 +2,14 @@
 
 This a backend app for a todo list with authentication and authorization in Express.
 
+##  Entity Relationship Diagram
+
+![ERD digram](https://github.com/ibrahimalsaif-tuwaiq/W08D03/blob/main/digrams/todos%20ERD.jpg?raw=true)
+
+## UML Diagram
+
+![UML digram](https://github.com/ibrahimalsaif-tuwaiq/W08D03/blob/main/digrams/todos%20backend%20UML.jpg?raw=true)
+
 ## Getting Started
 
 ### Installing Dependencies
