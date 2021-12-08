@@ -8,7 +8,7 @@ This a backend app for a todo list with authentication and authorization in Expr
 
 ## UML Diagram
 
-![UML digram](https://github.com/ibrahimalsaif-tuwaiq/W08D03/blob/main/digrams/todos%20backend%20UML.jpg?raw=true)
+![UML digram](https://github.com/ibrahimalsaif-tuwaiq/W08D03/blob/main/digrams/Todos%20Backend%20UML.jpg?raw=true)
 
 ## Getting Started
 
