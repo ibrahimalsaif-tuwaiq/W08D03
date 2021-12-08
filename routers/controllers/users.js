@@ -115,7 +115,9 @@ const deleteUser = (req, res) => {
           .catch((err) => {
             console.log(err);
           });
-        res.status(200).json({ message: "User has been deleted successfully" });
+        res
+          .status(200)
+          .json({ message: "User has been deleted successfully", userId: id });
       } else {
         res
           .status(404)
